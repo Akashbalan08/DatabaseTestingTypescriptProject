@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id        Int      @id @default(autoincrement())
+  name      String
+  bio       String?
+  books     Book[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Book {
+  id          Int        @id @default(autoincrement())
+  title       String
+  genre       String
+  rating      Float?
+  reviews     Review[]
+  price       Float
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  authorId    Int
+  author      Author     @relation(fields: [authorId], references: [id])
+  Order       Order[]
+  Publisher   Publisher? @relation(fields: [publisherId], references: [id])
+  publisherId Int?
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  content    String
+  rating     Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  bookId     Int
+  book       Book     @relation(fields: [bookId], references: [id])
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  orders    Order[]
+  reviews   Review[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  total      Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  bookId     Int
+  book       Book     @relation(fields: [bookId], references: [id])
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+}
+
+model Publisher {
+  id        Int      @id @default(autoincrement())
+  name      String
+  books     Book[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GenreSales {
+  id    Int    @id @default(autoincrement())
+  genre String
+  sales Int
+}
