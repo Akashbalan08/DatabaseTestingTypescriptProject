@@ -1,4 +1,4 @@
-# DatabaseTesting_Group8FinalProject
+# DatabaseTesting
 ## Online Book Store 
 The project contains the below files.
 * Prisma : DB creation and connection setup is done through Prisma ORM
